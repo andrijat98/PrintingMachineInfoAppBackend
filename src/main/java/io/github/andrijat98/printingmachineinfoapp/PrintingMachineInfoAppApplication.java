@@ -29,7 +29,7 @@ public class PrintingMachineInfoAppApplication {
 	@Bean
 	CommandLineRunner run(MachineRepository machineRepo, AppUserService userService) {
 		return args -> {
-			machineRepo.save(new PrintingMachine(null, "Heidelberg", "SM 102",
+			/*machineRepo.save(new PrintingMachine(null, "Heidelberg", "SM 102",
 					"Ofset", "2", true, "720 x 1020 mm", "280 x 420 mm",
 					"13000", "2 m", "2.5 m", "1 m", "lorem ipsum", null, null));
 			machineRepo.save(new PrintingMachine(null, "KBA", "Rapida 106",
@@ -40,15 +40,15 @@ public class PrintingMachineInfoAppApplication {
 					"1200", "3.5 m", "2 m", "1.8 m", "lorem ipsum", null, null));
 			machineRepo.save(new PrintingMachine(null, "Sakurai", "Maestro MS102A2 ",
 					"Digitalna", "6", false, "720 x 1020 mm", "560 x 350 mm",
-					"3300", "7 m", "2.5 m", "2.3 m", "lorem ipsum", null, null));
+					"3300", "7 m", "2.5 m", "2.3 m", "lorem ipsum", null, null));*/
 			userService.saveRole(new Role(null, "ROLE_USER"));
 			userService.saveRole(new Role(null, "ROLE_ADMIN"));
 			
 			userService.saveUser(new AppUser(null, "Andrija Tomic", "andrijat98", "1234", new ArrayList<>()));
-			userService.saveUser(new AppUser(null, "Pepe The Frog", "pepe", "1234", new ArrayList<>()));
+			userService.saveUser(new AppUser(null, "Normal User", "normaluser", "1234", new ArrayList<>()));
 			
 			userService.addRoleToUser("andrijat98", "ROLE_ADMIN");
-			userService.addRoleToUser("pepe", "ROLE_USER");
+			userService.addRoleToUser("normaluser", "ROLE_USER");
 		};
 	}
 	/*
