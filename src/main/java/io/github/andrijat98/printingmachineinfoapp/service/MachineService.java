@@ -38,7 +38,7 @@ public class MachineService {
 	
 	public PrintingMachine findPritningMachineById(Long id) {
 		return machineRepo.findPrintingMachineById(id)
-				.orElseThrow(() -> new MachineNotFoundException("Mašina sa ID" + id + " nije pronađena."));
+				.orElseThrow(() -> new MachineNotFoundException("Machine with ID" + id + " was not found."));
 	}
 	
 	@Transactional

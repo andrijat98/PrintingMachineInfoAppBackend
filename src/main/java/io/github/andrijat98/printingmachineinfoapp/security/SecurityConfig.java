@@ -23,16 +23,16 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @RequiredArgsConstructor
 
-public class SecurityConfig implements WebMvcConfigurer{
+public class SecurityConfig {
+	
+	//@Bean
+	//public BCryptPasswordEncoder bCryptPasswordEncoder() {
+	//	return new BCryptPasswordEncoder();
+	//}
 	
 	private final UserDetailsService userDetailService;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	
-	
-	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -45,7 +45,7 @@ public class SecurityConfig implements WebMvcConfigurer{
         http.cors();
         
         http.authorizeRequests()
-        .antMatchers("/user/token/refresh","/login","/user/getuser/**","/machines/all", "/user-photos/**").permitAll()
+        .antMatchers("/user/token/refresh","/login","/user/getuser/**","/machines/all", "/machine-photos/**").permitAll()
         .anyRequest().hasRole("ADMIN")
         
         //http.authorizeRequests()

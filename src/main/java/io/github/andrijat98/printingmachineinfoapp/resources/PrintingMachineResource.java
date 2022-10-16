@@ -1,14 +1,13 @@
 package io.github.andrijat98.printingmachineinfoapp.resources;
 
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,12 +22,13 @@ import org.springframework.web.multipart.MultipartFile;
 import io.github.andrijat98.printingmachineinfoapp.models.Image;
 import io.github.andrijat98.printingmachineinfoapp.models.PrintingMachine;
 import io.github.andrijat98.printingmachineinfoapp.service.MachineService;
-import io.github.andrijat98.printingmachineinfoapp.utils.FileUploadUtil;
+import io.github.andrijat98.printingmachineinfoapp.utils.UploadImageUtil;
 
 @RestController
 @RequestMapping("/machines")
 public class PrintingMachineResource {
 	
+	@Autowired
 	private final MachineService machineService;
 	
 	public PrintingMachineResource(MachineService machineService) {
@@ -47,24 +47,20 @@ public class PrintingMachineResource {
 		return new ResponseEntity<>(machine, HttpStatus.OK);
 	}
 	
-	@PostMapping(value = {"/add"}, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+	@PostMapping(value = {"/add"},  consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	public ResponseEntity<PrintingMachine> addMachine(@RequestPart("machine") PrintingMachine machine,
 			@RequestPart("imageFile") MultipartFile[] file) throws IOException {
 		
 		try {
-			
 			PrintingMachine addedMachine = machineService.addMachine(machine);
-			Set<Image> images = uploadImage(file, addedMachine);
+			Set<Image> images = UploadImageUtil.uploadImage(file, addedMachine);
 			addedMachine.setMachineImages(images);
 			machineService.updateMachine(addedMachine);
-			
 			return new ResponseEntity<>(addedMachine, HttpStatus.CREATED);
 			
 		} catch (Exception e) {
-			//make an exception message response
 			System.out.println(e.getMessage());
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-			
 		}
 	}
 	
@@ -79,27 +75,4 @@ public class PrintingMachineResource {
 		machineService.deleteMachine(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
-	public Set<Image> uploadImage(MultipartFile[] multipartFiles, PrintingMachine machine) throws IOException {
-		Set<Image> imageModels = new HashSet<>();
-		for (MultipartFile file: multipartFiles) {
-			
-			String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-			String uploadDir = "user-photos/" + machine.getId();
-			
-			FileUploadUtil.saveFile(uploadDir, fileName, file);
-			
-			Image imageModel = new Image(
-					file.getOriginalFilename().toString(),
-					file.getContentType().toString(),
-					"http://localhost:8080/" + uploadDir + "/" + fileName
-					//file.getBytes()
-					
-					);
-			imageModels.add(imageModel);
-		}
-		
-		return imageModels;
-	}
-	
 }

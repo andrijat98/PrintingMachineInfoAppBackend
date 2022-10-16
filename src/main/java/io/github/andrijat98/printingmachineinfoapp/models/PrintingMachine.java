@@ -9,9 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -30,9 +28,9 @@ public class PrintingMachine {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false, updatable = false)
 	private Long id;
-	@NotEmpty(message = "Proizvođač polje ne sme biti prazno")
+	@NotEmpty()
 	private String manufacturer;
-	@NotEmpty(message = "Model polje ne sme biti prazno")
+	@NotEmpty()
 	private String model;
 	private String printingTechnique;
 	@Min(1)
@@ -47,15 +45,6 @@ public class PrintingMachine {
 	@Column(columnDefinition = "LONGTEXT")
 	private String description;
 	private String dateAdded;
-
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "machine_images",
-		joinColumns = {
-			@JoinColumn(name = "machine_id")
-		},
-		inverseJoinColumns = {
-			@JoinColumn(name = "image_id")
-		}
-	)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Image> machineImages;
 }

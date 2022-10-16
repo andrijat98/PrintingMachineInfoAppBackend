@@ -9,7 +9,6 @@ import org.springframework.util.unit.DataSize;
 
 @Configuration
 public class FileSizeConfig {
-
 	@Bean
 	public MultipartConfigElement multipartConfigElement() {
 		MultipartConfigFactory factory = new MultipartConfigFactory();
