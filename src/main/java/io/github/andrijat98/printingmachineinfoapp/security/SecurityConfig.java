@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -25,47 +26,23 @@ import lombok.RequiredArgsConstructor;
 
 public class SecurityConfig {
 	
-	//@Bean
-	//public BCryptPasswordEncoder bCryptPasswordEncoder() {
-	//	return new BCryptPasswordEncoder();
-	//}
-	
 	private final UserDetailsService userDetailService;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     	
     	http.csrf().disable();
     	http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-    	//test later
-
         http.cors();
-        
         http.authorizeRequests()
-        .antMatchers("/user/token/refresh","/login","/user/getuser/**","/machines/all", "/machine-photos/**").permitAll()
+        .antMatchers("/login", "/user/getuser/**"
+        , "/machines/all", "/machine-photos/**").permitAll()
         .anyRequest().hasRole("ADMIN")
-        
-        //http.authorizeRequests()
-        //.antMatchers("/user/*","/machines/get/*", "/machines/add", "/machines/update", "/machines/delete/**")
-        //.hasRole("ADMIN")
-        
-        
-        /*
-        .antMatchers("/machines/add").hasRole("ADMIN")
-        .antMatchers("/machines/update").hasRole("ADMIN")
-        .antMatchers("/machines/delete/**").hasRole("ADMIN")*/
-        
-        
-        
         .and().formLogin();
         
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
-        
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
-        
         
         return http.build();
     }

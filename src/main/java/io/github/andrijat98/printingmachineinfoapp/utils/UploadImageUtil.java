@@ -12,7 +12,8 @@ import io.github.andrijat98.printingmachineinfoapp.models.PrintingMachine;
 
 public class UploadImageUtil {
 	
-	public static Set<Image> uploadImage(MultipartFile[] multipartFiles, PrintingMachine machine) throws IOException {
+	public static Set<Image> uploadImage(MultipartFile[] multipartFiles,
+			PrintingMachine machine) throws IOException {
 		Set<Image> imageModels = new HashSet<>();
 		for (MultipartFile file: multipartFiles) {
 			
@@ -22,7 +23,7 @@ public class UploadImageUtil {
 			FileUploadUtil.saveFile(uploadDir, fileName, file);
 			
 			Image imageModel = new Image(
-					"http://localhost:8080/" + uploadDir + "/" + fileName
+				"http://localhost:8080/" + uploadDir + "/" + fileName
 					);
 			imageModels.add(imageModel);
 		}

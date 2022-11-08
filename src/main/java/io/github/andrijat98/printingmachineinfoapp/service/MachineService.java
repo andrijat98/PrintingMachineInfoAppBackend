@@ -32,6 +32,7 @@ public class MachineService {
 		return machineRepo.findAll();
 	}
 	
+	@Transactional
 	public PrintingMachine updateMachine(PrintingMachine machine) {
 		return machineRepo.save(machine);
 	}

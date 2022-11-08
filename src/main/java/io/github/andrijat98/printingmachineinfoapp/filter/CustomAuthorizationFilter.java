@@ -40,6 +40,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter{
 			if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
 				try {
 					
+					System.out.println(authorizationHeader);
 					String token = authorizationHeader.substring(7);
 					Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
 					JWTVerifier verifier = JWT.require(algorithm).build();
@@ -62,7 +63,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter{
 					log.error("Error logging in: {}", e.getMessage());
 					response.setHeader("error", e.getMessage());
 					response.setStatus(org.springframework.http.HttpStatus.FORBIDDEN.value());
-					//response.sendError(org.springframework.http.HttpStatus.FORBIDDEN.value());
 					
 					Map<String, String> error = new HashMap<>();
 					error.put("error_message", e.getMessage());
