@@ -3,7 +3,8 @@
 Spring Boot project that allows users to view info for various printing machines and for admins to add, edit and remove that info.
 
 ![7](https://github.com/andrijat98/PrintingMachineInfoAppBackend/assets/113612986/ba9d8ab5-941c-4f9a-a384-4043c48594e7)
-![3](https://github.com/andrijat98/PrintingMachineInfoAppBackend/assets/113612986/2f75b071-fd0b-4f12-9eb0-a005cda748de)
+![2](https://github.com/andrijat98/PrintingMachineInfoAppBackend/assets/113612986/985b8a8c-2eb6-4e49-8474-eb385020783b)
+
 
 ## Features
 
